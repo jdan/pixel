@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import * as shaders from "./shaders";
+let { useState, useEffect } = require("react");
+let shaders = require("./shaders");
 
 const FPS = 60;
 
-export default function makeArtiste({ width, height, drawPixel, onFinish }) {
+module.exports = function makeArtiste({ width, height, drawPixel, onFinish }) {
   return {
     drawPixelShader(shader) {
       for (let x = 0; x < width; x++) {
@@ -16,9 +16,9 @@ export default function makeArtiste({ width, height, drawPixel, onFinish }) {
       onFinish();
     },
   };
-}
+};
 
-export function useArtiste(canvas) {
+exports.useArtiste = (canvas) => {
   let [time, setTime] = useState(0);
 
   useEffect(() => {
@@ -49,4 +49,4 @@ export function useArtiste(canvas) {
 
     return () => clearTimeout(timer);
   }, [time]);
-}
+};

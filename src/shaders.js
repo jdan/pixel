@@ -1,4 +1,4 @@
-export const dot = (x, y) => {
+exports.dot = (x, y) => {
   let t = new Date() / 1000;
   return x === Math.floor(Math.sin(t * 2) * 16 + 16) &&
     y === Math.floor(Math.cos(t * 2) * 16 + 16)
@@ -6,11 +6,11 @@ export const dot = (x, y) => {
     : [0, 0, 0];
 };
 
-export const gradient = (x, y) => {
+exports.gradient = (x, y) => {
   return [Math.floor((255 * x) / 32), 0, Math.floor((255 * y) / 32)];
 };
 
-export const mandel = (x, y) => {
+exports.mandel = (x, y) => {
   let t = new Date() / 1000;
 
   // a + bi
