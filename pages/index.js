@@ -1,8 +1,10 @@
 import Head from "next/head";
+import { useRef } from "react";
 import { useArtiste } from "../src/artiste";
 
 export default function Home() {
-  useArtiste();
+  let canvas = useRef(null);
+  useArtiste(canvas);
 
   return (
     <div>
@@ -13,7 +15,7 @@ export default function Home() {
 
       <main>
         <h1>Hello, world!</h1>
-        <canvas width="32" height="32" id="canvas"></canvas>
+        <canvas ref={canvas} width="32" height="32" id="canvas"></canvas>
       </main>
     </div>
   );
