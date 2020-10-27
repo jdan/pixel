@@ -11,8 +11,6 @@ exports.gradient = (x, y) => {
 };
 
 exports.mandel = (x, y) => {
-  let t = new Date() / 1000;
-
   // a + bi
   let a = (x / 32) * 3.5 - 2.35;
   let b = (y / 32) * 3.5 - 1.75;
@@ -38,4 +36,34 @@ exports.mandel = (x, y) => {
 
   let c = Math.floor(Math.sqrt(h / MAX) * 255);
   return [c, c, c];
+};
+
+exports.hues = (px, py, t) => {
+  let x_ = px - 16;
+  let y_ = py - 16;
+
+  // https://www.rapidtables.com/convert/color/hsv-to-rgb.html
+  let v = 1;
+  let s = Math.sqrt(x_ * x_ + y_ * y_) / (16 * Math.sqrt(2));
+  let h = (Math.atan2(y_, x_) / Math.PI) * 180 + 180;
+
+  h = (h + +t / 10) % 360;
+
+  let c = v * s;
+  let x = s * (1 - Math.abs(((h / 60) % 2) - 1));
+  let m = v - c;
+
+  if (h <= 60) {
+    return [(c + m) * 255, (x + m) * 255, m * 255];
+  } else if (h <= 120) {
+    return [(x + m) * 255, (c + m) * 255, m * 255];
+  } else if (h <= 180) {
+    return [m * 255, (c + m) * 255, (x + m) * 255];
+  } else if (h <= 240) {
+    return [m * 255, (x + m) * 255, (c + m) * 255];
+  } else if (h <= 300) {
+    return [(x + m) * 255, m * 255, (c + m) * 255];
+  } else {
+    return [(c + m) * 255, m * 255, (x + m) * 255];
+  }
 };

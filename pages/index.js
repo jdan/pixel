@@ -28,7 +28,7 @@ function useArtiste(canvas) {
           },
         });
 
-        art.drawPixelShader(shaders.gradient);
+        art.drawPixelShader(shaders.hues);
       }
 
       setTime((time) => time + 1);
