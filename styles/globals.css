@@ -14,3 +14,28 @@ a {
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --pixel-size: 20px;
+}
+
+main {
+  max-width: 640px;
+  margin: 80px auto;
+}
+
+#canvas {
+  image-rendering: pixelated;
+  width: 640px;
+  height: 640px;
+}
+
+/* .pixels {
+  display: grid;
+  grid-template-columns: repeat(32, var(--pixel-size));
+}
+
+.pixel {
+  width: var(--pixel-size);
+  height: var(--pixel-size);
+} */

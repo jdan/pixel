@@ -1,6 +1,9 @@
 import Head from "next/head";
+import { useArtiste } from "../src/artiste";
 
 export default function Home() {
+  useArtiste();
+
   return (
     <div>
       <Head>
@@ -10,6 +13,7 @@ export default function Home() {
 
       <main>
         <h1>Hello, world!</h1>
+        <canvas width="32" height="32" id="canvas"></canvas>
       </main>
     </div>
   );
