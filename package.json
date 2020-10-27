@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "easybotics-rpi-rgb-led-matrix": "^0.4.1",
     "next": "9.5.5",
     "react": "17.0.1",
     "react-dom": "17.0.1"
