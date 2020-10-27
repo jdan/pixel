@@ -14,7 +14,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1>Hello, world!</h1>
+        <h1>🎨</h1>
         <canvas ref={canvas} width="32" height="32" id="canvas"></canvas>
       </main>
     </div>
