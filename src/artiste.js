@@ -1,8 +1,16 @@
-module.exports = function makeArtiste({ width, height, drawPixel, onFinish }) {
+module.exports = function makeArtiste({
+  width,
+  height,
+  getInitialBuffer = () => null,
+  drawPixel,
+  onFinish,
+}) {
+  let buffer = getInitialBuffer();
+
   return {
     // `buffer` and `onFinish` might be in the wrong places? dunno
     // this design is a lil weird
-    drawPixelShader(shader, buffer) {
+    drawPixelShader(shader) {
       let t = +new Date();
 
       for (let x = 0; x < width; x++) {
@@ -12,7 +20,7 @@ module.exports = function makeArtiste({ width, height, drawPixel, onFinish }) {
         }
       }
 
-      onFinish();
+      onFinish(buffer);
     },
   };
 };

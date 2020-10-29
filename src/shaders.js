@@ -69,5 +69,5 @@ exports.hues = (px, py, t) => {
 };
 
 exports.collatz = (x, y, _, buffer) => {
-  return buffer[32 * y + x] ? [255, 255, 255] : [0, 0, 0];
+  return buffer.currentValue[32 * y + x] ? [255, 255, 255] : [0, 0, 0];
 };
