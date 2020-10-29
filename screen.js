@@ -24,6 +24,12 @@ let art = artiste({
   },
   onFinish: () => matrix.update(),
 });
-art.drawPixelShader(shaders.mandel);
+art.drawPixelShader(
+  shaders.makeGradientShader({
+    from: [93, 59, 96],
+    to: [63, 87, 77],
+    angle: -Math.PI / 6,
+  })
+);
 
 while (1) {}

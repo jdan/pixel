@@ -103,8 +103,34 @@ let linearTween = (min, max, value) => {
   return value * (max - min) + min;
 };
 
-exports.makeGradientShader = ({ from, to }) => (x, _) => [
-  Math.floor(linearTween(from[0], to[0], x / 32)),
-  Math.floor(linearTween(from[1], to[1], x / 32)),
-  Math.floor(linearTween(from[2], to[2], x / 32)),
-];
+exports.makeGradientShader = ({ from, to, angle = 0 }) => (x, y, t) => {
+  // We'll place the gradient along the equation of the circle
+  // encompassing the entire screen
+  let r = 16 * Math.sqrt(2);
+
+  let x_ = x - 16;
+  let y_ = y - 16;
+  let px = r * Math.cos(Math.PI + angle);
+  let py = r * Math.sin(Math.PI + angle);
+
+  let dx = x_ - px;
+  let dy = y_ - py;
+
+  let theta = Math.atan2(dy, dx) - angle;
+  let distanceAlongAxis =
+    (Math.sqrt(dx * dx + dy * dy) * Math.cos(theta)) / (2 * r);
+
+  // Animate along the axis
+  distanceAlongAxis = (distanceAlongAxis + t / 2000) % 1;
+
+  // Linearly interpolate from `a` to `b`, then back to `a` so we can loop
+  return [0, 1, 2].map((i) => {
+    if (distanceAlongAxis < 0.5) {
+      return Math.floor(linearTween(from[i], to[i], 2 * distanceAlongAxis));
+    } else {
+      return Math.floor(
+        linearTween(to[i], from[i], 2 * (distanceAlongAxis - 0.5))
+      );
+    }
+  });
+};
