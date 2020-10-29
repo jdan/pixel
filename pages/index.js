@@ -2,8 +2,14 @@ import Head from "next/head";
 import { useRef, useState, useEffect } from "react";
 import * as shaders from "../src/shaders";
 import makeArtiste from "../src/artiste";
+import binary from "../src/binary";
 
 const FPS = 60;
+
+// collatz stuff
+let initialValue = binary.createBitString(32 * 32);
+initialValue[200] = 1;
+let currentValue = [...initialValue];
 
 function useArtiste(canvas) {
   let [time, setTime] = useState(0);
@@ -25,10 +31,23 @@ function useArtiste(canvas) {
           },
           onFinish: () => {
             ctx.putImageData(imageData, 0, 0);
+
+            // collatz stuff :(
+            if (binary.isOne(currentValue)) {
+              binary.inc(initialValue);
+              currentValue = [...initialValue];
+            } else if (currentValue[0] === 0) {
+              binary.halve(currentValue);
+            } else {
+              let n = [...currentValue];
+              binary.double(currentValue);
+              binary.addLeft(currentValue, n);
+              binary.inc(currentValue);
+            }
           },
         });
 
-        art.drawPixelShader(shaders.hues);
+        art.drawPixelShader(shaders.collatz, currentValue);
       }
 
       setTime((time) => time + 1);
