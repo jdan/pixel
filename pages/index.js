@@ -2,11 +2,10 @@ import Head from "next/head";
 import { useRef, useState, useEffect } from "react";
 import * as shaders from "../src/shaders";
 import makeArtiste from "../src/artiste";
-import binary from "../src/binary";
 
 const FPS = 60;
 
-function useArtiste(canvas) {
+function useArtiste(canvas, shader) {
   let [time, setTime] = useState(0);
   let art = useRef(null);
 
@@ -18,16 +17,7 @@ function useArtiste(canvas) {
       art.current = makeArtiste({
         width: 32,
         height: 32,
-        getInitialBuffer: () => {
-          // getInitialBuffer and onFinish are (current) collatz-specific
-          // and should be specified in the shader
-          let initialValue = binary.createBitString(32 * 32);
-          initialValue[0] = 1;
-          return {
-            initialValue,
-            currentValue: [...initialValue],
-          };
-        },
+        getInitialBuffer: shader.getInitialBuffer,
         drawPixel: (x, y, [r, g, b]) => {
           imageData.data[32 * 4 * y + x * 4] = r;
           imageData.data[32 * 4 * y + x * 4 + 1] = g;
@@ -36,26 +26,15 @@ function useArtiste(canvas) {
         },
         onFinish: (buffer) => {
           ctx.putImageData(imageData, 0, 0);
-
-          if (binary.isOne(buffer.currentValue)) {
-            binary.inc(buffer.initialValue);
-            buffer.currentValue = [...buffer.initialValue];
-          } else if (buffer.currentValue[0] === 0) {
-            binary.halve(buffer.currentValue);
-          } else {
-            let n = [...buffer.currentValue];
-            binary.double(buffer.currentValue);
-            binary.addLeft(buffer.currentValue, n);
-            binary.inc(buffer.currentValue);
-          }
+          shader.onFinish && shader.onFinish(buffer);
         },
       });
     }
-  }, [canvas]);
+  }, [canvas, shader]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      art.current.drawPixelShader(shaders.collatz);
+      art.current.drawPixelShader(shader);
       setTime((time) => time + 1);
     }, 1000 / FPS);
 
@@ -65,7 +44,7 @@ function useArtiste(canvas) {
 
 export default function Home() {
   let canvas = useRef(null);
-  useArtiste(canvas);
+  useArtiste(canvas, shaders.collatz);
 
   return (
     <div>

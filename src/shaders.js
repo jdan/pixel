@@ -1,3 +1,5 @@
+let binary = require("./binary");
+
 exports.dot = (x, y) => {
   let t = new Date() / 1000;
   return x === Math.floor(Math.sin(t * 2) * 16 + 16) &&
@@ -68,6 +70,31 @@ exports.hues = (px, py, t) => {
   }
 };
 
-exports.collatz = (x, y, _, buffer) => {
+let collatz = (x, y, _, buffer) => {
   return buffer.currentValue[32 * y + x] ? [255, 255, 255] : [0, 0, 0];
 };
+
+collatz.getInitialBuffer = () => {
+  let initialValue = binary.createBitString(32 * 32);
+  initialValue[0] = 1;
+  return {
+    initialValue,
+    currentValue: [...initialValue],
+  };
+};
+
+collatz.onFinish = (buffer) => {
+  if (binary.isOne(buffer.currentValue)) {
+    binary.inc(buffer.initialValue);
+    buffer.currentValue = [...buffer.initialValue];
+  } else if (buffer.currentValue[0] === 0) {
+    binary.halve(buffer.currentValue);
+  } else {
+    let n = [...buffer.currentValue];
+    binary.double(buffer.currentValue);
+    binary.addLeft(buffer.currentValue, n);
+    binary.inc(buffer.currentValue);
+  }
+};
+
+exports.collatz = collatz;

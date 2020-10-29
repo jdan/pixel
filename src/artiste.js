@@ -1,9 +1,9 @@
 module.exports = function makeArtiste({
   width,
   height,
-  getInitialBuffer = () => null,
   drawPixel,
-  onFinish,
+  getInitialBuffer = () => null,
+  onFinish = () => null,
 }) {
   let buffer = getInitialBuffer();
 
