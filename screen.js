@@ -22,15 +22,19 @@ let art = artiste({
     // I installed the screen rotated 90 degrees
     matrix.setPixel(y, 32 - x, ...rgb);
   },
-  onFinish: () => matrix.update(),
+  onFinish: (buffer) => {
+    for (let x = 0; x < 32; x++) {
+      if (buffer.initialValue[x]) {
+        matrix.setPixel(31, 31 - x, 0, 255, 0);
+      }
+    }
+
+    matrix.update();
+    shaders.collatz.onFinish(buffer);
+  },
+  getInitialBuffer: shaders.collatz.getInitialBuffer,
 });
 
 while (1) {
-  art.drawPixelShader(
-    shaders.makeGradientShader({
-      from: [93, 59, 96],
-      to: [63, 87, 77],
-      angle: -Math.PI / 6,
-    })
-  );
+  art.drawPixelShader(shaders.collatz);
 }
