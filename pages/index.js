@@ -44,7 +44,10 @@ function useArtiste(canvas, shader) {
 
 export default function Home() {
   let canvas = useRef(null);
-  useArtiste(canvas, shaders.collatz);
+  useArtiste(
+    canvas,
+    shaders.makeGradientShader({ from: [93, 59, 96], to: [63, 87, 77] })
+  );
 
   return (
     <div>

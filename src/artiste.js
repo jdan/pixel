@@ -15,7 +15,7 @@ module.exports = function makeArtiste({
 
       for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
-          let rgb = shader(x, y, t, buffer);
+          let rgb = shader(x, y, t, buffer) || [0, 0, 0];
           drawPixel(x, y, rgb);
         }
       }

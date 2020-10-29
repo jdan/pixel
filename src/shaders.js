@@ -98,3 +98,13 @@ collatz.onFinish = (buffer) => {
 };
 
 exports.collatz = collatz;
+
+let linearTween = (min, max, value) => {
+  return value * (max - min) + min;
+};
+
+exports.makeGradientShader = ({ from, to }) => (x, _) => [
+  Math.floor(linearTween(from[0], to[0], x / 32)),
+  Math.floor(linearTween(from[1], to[1], x / 32)),
+  Math.floor(linearTween(from[2], to[2], x / 32)),
+];
