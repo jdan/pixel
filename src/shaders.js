@@ -134,3 +134,28 @@ exports.makeGradientShader = ({ from, to, angle = 0 }) => (x, y, t) => {
     }
   });
 };
+
+exports.makeSpriteShader = ({ pattern, colors }) => (x, y) => {
+  if (y >= pattern.length) {
+    return null;
+  } else if (x >= pattern[y].length) {
+    return null;
+  } else if (pattern[y][x] === " ") {
+    return null;
+  } else {
+    return colors[parseInt(pattern[y][x])];
+  }
+};
+
+exports.translateShader = ({ shader, x, y }) => (inX, inY, ...rest) => {
+  let newX = (inX - x + 32) % 32;
+  let newY = (inY - y + 32) % 32;
+  return shader(newX, newY, ...rest);
+};
+
+// Unfortunately `shader.getInitialBuffer` and `shader.onFinish`
+// won't be preserved during this
+exports.combineShaders = ({ bottom, top }) => (x, y, ...rest) =>
+  top(x, y, ...rest) || bottom(x, y, ...rest);
+
+exports.chess = require("./chess").chess;
