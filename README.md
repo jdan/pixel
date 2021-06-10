@@ -4,4 +4,4 @@ This repo was an experiment in making art for my [LED matrix](https://discord.co
 
 I run this repo on a raspberry pi with `node screen.js` as a startup script. I have no plans to update it but no need to keep it to myself.
 
-I've since moved onto making art for an e-ink display over at [jdan/hashart](https://github.com/jdan/hashart) (hash.jordanscales.com).
+I've since moved onto making art for an e-ink display over at [jdan/hashart](https://github.com/jdan/hashart) ([hash.jordanscales.com](https://hash.jordanscales.com)).
